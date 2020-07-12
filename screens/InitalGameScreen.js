@@ -69,7 +69,7 @@ const InitialGameScreen = (props) => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
             <View style={styles.screen}>
 
-                <Text style={styles.title}>Start a new game!</Text>
+                <Text style={styles.title}>Ho a new game!</Text>
 
                 {/* We can pass style as props, because they are js's objects */}
                 <Card style={styles.card}>  

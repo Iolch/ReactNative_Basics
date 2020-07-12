@@ -1,9 +1,11 @@
 import React from 'react';
 import {
     Button,
+    Image,
     StyleSheet, 
     Text,
     View, 
+    
 } from 'react-native';
 
 //COSTUM COMPONENTS IMPORTS
@@ -14,8 +16,11 @@ import Colors from '../constants/colors';
 const GameOverScreen = (props) =>{
     return(
         <View style={styles.screen}>
-            <Text style={styles.title}>Game is over!</Text>
 
+            <View style={styles.imageContainer}>
+                <Image source={require('../assets/success.png')} style={styles.image} resizeMode="cover"/>
+            </View>
+            <Text style={styles.title}>Game is over!</Text>
             <Card style={styles.card}>  
                 
                 <Text>Your Number: {props.userChoice}</Text>
@@ -34,7 +39,8 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor:"#f2f2f2"
     },
     card:{
         width: "90%",
@@ -44,5 +50,18 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: "40%",
     },
+    imageContainer:{
+        borderRadius:200,
+        borderWidth: 3,
+        borderColor: Colors.primary,
+        width:"80%",
+        height:250,
+        overflow:"hidden",
+        marginVertical: 10
+    },
+    image:{
+        width:"100%",
+        height:"100%"
+    }
 });
 export default GameOverScreen;
