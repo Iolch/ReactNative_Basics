@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     card:{
         // width: "90%",                //Agora são definidos em props.style
         // padding: 10,
+        marginVertical: 20,
         backgroundColor: "#ffffff",
         alignItems: "center",
         shadowColor: "#000000",                    //Only works on ios
