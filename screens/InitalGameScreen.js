@@ -26,7 +26,7 @@ const InitialGameScreen = (props) => {
     };
     return(
         // The touchable is wraping everything so that we can close the keybor by click anywhere off the input
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
             <View style={styles.screen}>
 
                 <Text style={styles.title}>Start a new game!</Text>
