@@ -40,9 +40,8 @@ const GameScreen = (props) => {
     const initialGuess = generateLimitedNumber(minimum.current, maximum.current, props.userChoice);
 
     // We want to store the guesses through out the game
-    const [guesses, setGuesses] = useState([{value:initialGuess, id: initialGuess}]);
+    const [guesses, setGuesses] = useState([initialGuess.toString()]);
 
-    const [gameRounds, setGameRounds] = useState(0);
     
     // By doing something like this, the initial state will be set only once
     // this happens because, when the useState() function execute, it checks
@@ -57,12 +56,19 @@ const GameScreen = (props) => {
     
     useEffect(() => {
         if(currentGuess === userChoice){  //here, no longer use props.userChoice or props.gameOver because we declared above
-            onGameOver(gameRounds, currentGuess);
+            onGameOver(guesses.length, currentGuess);
         }
-    }, [onGameOver, userChoice, gameRounds, currentGuess]); // especifying the dependencies, will make that useEffect will only run if one of them changed this cicle
+    }, [onGameOver, userChoice, guesses.length, currentGuess]); // especifying the dependencies, will make that useEffect will only run if one of them changed this cicle
 
 
-
+    const renderListItem = (listLenght, itemData) => {
+        return (
+            <View style={DefaultStyles.buttonsContainer}>
+                <Text>#{listLenght - itemData.index}</Text>
+                <Text>{itemData.item}</Text>
+            </View>
+        );     
+    };
    
    
 
@@ -87,8 +93,8 @@ const GameScreen = (props) => {
         const nextNumber = generateLimitedNumber(minimum.current, maximum.current, currentGuess);
 
         setCurrentGuess(nextNumber);
-        setGuesses((currentGuesses) => [{value:nextNumber, id:nextNumber}, ...currentGuesses]);
-        setGameRounds((currentRounds) => currentRounds + 1);
+        setGuesses((currentGuesses) => [nextNumber.toString(), ...currentGuesses]);
+        
     };
     return (
         <View style={DefaultStyles.screen}>
@@ -106,11 +112,9 @@ const GameScreen = (props) => {
             <Card style={DefaultStyles.card}>
                 <Text style={[DefaultStyles.title, DefaultStyles.highlight]}>Previous Guesses: </Text>
                 <FlatList 
-                    keyExtractor={(item, index) => item.id}
+                    keyExtractor={(item) => item}
                     data={guesses} 
-                    renderItem = {
-                        element => (<View><Text>{element.item.value}</Text></View>)
-                    }
+                    renderItem = {renderListItem.bind(this, guesses.length)}
                 />
             </Card>
         </View>
@@ -122,6 +126,10 @@ const styles = StyleSheet.create({
     button:{
         width: "40%",
     },
+    listContainer:{
+        flex: 1, 
+        width: "80%"
+    }
 });
   
   export default GameScreen;
