@@ -2,13 +2,13 @@ import React, {
     useState
 } from 'react';
 import {
+  Alert,        //API!
   Button,
   Keyboard,         // API! NOT A COMPONENT
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View,
-  Alert,            // API!
 } from 'react-native';
 
 //COSTUM COMPONENTS IMPORTS
@@ -46,6 +46,9 @@ const InitialGameScreen = (props) => {
         setEnteredValue('');
         Keyboard.dismiss();
     };
+    const gameStartHandler = () =>{
+        props.onStartGame(selectedValue);
+    } 
 
     // Here we will add something that will only render, when value confirm is true. Something like a ngif
     // To do that, we will make a variable recieve a component when confirm is true, on the bottom we will
@@ -57,7 +60,7 @@ const InitialGameScreen = (props) => {
                                 <NumberDisplay>
                                     {selectedValue}
                                 </NumberDisplay>
-                                <Button title="Start Game" color={Colors.primary}/>
+                                <Button title="Start Game" color={Colors.primary} onPress={gameStartHandler}/>
                             </Card>
     }
 
