@@ -15,8 +15,12 @@ import {
 import Card from '../components/Card';
 import Input from '../components/Input';
 import NumberDisplay from '../components/NumberDisplay';
+import MainButton from '../components/MainButton';
+
 //CONSTANTS IMPORTS
 import Colors from '../constants/colors';
+import DefaultStyles from '../constants/defaultstyles';
+
 
 const InitialGameScreen = (props) => {
 
@@ -55,24 +59,24 @@ const InitialGameScreen = (props) => {
     // display the confirmedOutput
     let confirmedOutput;
     if(valueConfirm){
-        confirmedOutput =   <Card style={styles.card}>
+        confirmedOutput =   <Card style={DefaultStyles.card}>
                                 <Text>Choosen number:</Text>
                                 <NumberDisplay>
                                     {selectedValue}
                                 </NumberDisplay>
-                                <Button title="Start Game" color={Colors.primary} onPress={gameStartHandler}/>
+                                <MainButton color={Colors.primary} onPress={gameStartHandler}>Start Game</MainButton>
                             </Card>
     }
 
     return(
         // The touchable is wraping everything so that we can close the keybor by click anywhere off the input
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss() }>
-            <View style={styles.screen}>
+            <View style={DefaultStyles.screen}>
 
-                <Text style={styles.title}>Ho a new game!</Text>
+                <Text style={DefaultStyles.title}>Start a new game!</Text>
 
                 {/* We can pass style as props, because they are js's objects */}
-                <Card style={styles.card}>  
+                <Card style={DefaultStyles.card}>  
                     <Text>Select a number!</Text>
                     <Input 
                         style={styles.input} 
@@ -85,9 +89,9 @@ const InitialGameScreen = (props) => {
                         value = {enteredValue}
                     />
                     {/* <TextInput placeholder="Type a number"/> */}
-                    <View style={styles.buttonsContainer}>
-                        <View style={styles.button}><Button title="Reset" onPress={resetInputHandler} color={Colors.secondary}/></View>
-                        <View style={styles.button}><Button title="Confirm" onPress={confirmInputHandler} color={Colors.primary} /></View>
+                    <View style={DefaultStyles.buttonsContainer}>
+                        <MainButton color={Colors.secondary} onPress={resetInputHandler}>Reset</MainButton>
+                        <MainButton color={Colors.primary} onPress={confirmInputHandler}>Confirm</MainButton>
                     </View>
                 </Card>
                 {confirmedOutput}
@@ -97,29 +101,6 @@ const InitialGameScreen = (props) => {
 };
 
 const styles = StyleSheet.create({
-    screen:{
-        flex:1,
-        padding: 10,
-        backgroundColor:"#f2f2f2",
-        alignItems: "center"
-    },
-    card:{
-        width: "90%",
-        padding: 10,
-    },
-    buttonsContainer:{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center"
-    },
-    button:{
-        width: "40%",
-    },
-    title:{
-        fontSize: 20,
-        marginVertical: 10,
-    }, 
     input:{
         width: 50,
         marginBottom: 20,

@@ -10,42 +10,31 @@ import {
 
 //COSTUM COMPONENTS IMPORTS
 import Card from '../components/Card';
+import MainButton from '../components/MainButton';
+
 //CONSTANTS IMPORTS
 import Colors from '../constants/colors';
+import DefaultStyles from '../constants/defaultstyles';
 
 const GameOverScreen = (props) =>{
     return(
-        <View style={styles.screen}>
+        <View style={DefaultStyles.screen}>
 
             <View style={styles.imageContainer}>
                 <Image source={require('../assets/success.png')} style={styles.image} resizeMode="cover"/>
             </View>
-            <Text style={styles.title}>Game is over!</Text>
-            <Card style={styles.card}>  
+            <Text style={DefaultStyles.title}>Game is over!</Text>
+            <Card style={DefaultStyles.card}>  
                 
-                <Text>Your Number: {props.userChoice}</Text>
-                <Text>Game Guess: {props.gameGuess}</Text>
-                <Text>Rounds taken: {props.rounds}</Text>
-                <View style={styles.button}><Button title="Again" onPress={props.onRestart} color={Colors.secondary} /></View>
+                <Text>Your number was <Text style={DefaultStyles.highlight}>{props.gameGuess}</Text>!</Text>
+                <Text>Your phone took <Text style={DefaultStyles.highlight}>{props.rounds}</Text> rounds to get it right.</Text>
+                
+                <MainButton style={styles.button} color={Colors.secondary} onPress={props.onRestart}>Again</MainButton>
             </Card>
         </View>
     );
 };
 const styles = StyleSheet.create({
-    title:{
-        fontSize: 20,
-        marginVertical: 10,
-    }, 
-    screen: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor:"#f2f2f2"
-    },
-    card:{
-        width: "90%",
-        padding: 10,
-    },
     button:{
         marginTop: 10,
         width: "40%",
@@ -53,7 +42,7 @@ const styles = StyleSheet.create({
     imageContainer:{
         borderRadius:200,
         borderWidth: 3,
-        borderColor: Colors.primary,
+        borderColor: "#fff",
         width:"80%",
         height:250,
         overflow:"hidden",
@@ -62,6 +51,7 @@ const styles = StyleSheet.create({
     image:{
         width:"100%",
         height:"100%"
-    }
+    },
+
 });
 export default GameOverScreen;

@@ -37,7 +37,7 @@ const App = () => {
 
   let content = <InitialGameScreen onStartGame={startGameHandler}/> //the game starts with the initial screen
   if(userNumber && (guessRounds <= 0)) content = <GameScreen userChoice={userNumber} onGameOver={gameOverHandler}/>  // when the number is set on the initial login, we change the content value
-  if(gameNumber && (guessRounds > 0)) content = <GameOverScreen userChoice={userNumber} gameGuess={gameNumber} rounds={guessRounds} onRestart={restartGameHandler}/>
+  if(gameNumber && (guessRounds > 0)) content = <GameOverScreen gameGuess={gameNumber} rounds={guessRounds} onRestart={restartGameHandler}/>
   if (!userNumber && !gameNumber) content = <InitialGameScreen onStartGame={startGameHandler}/> 
 
   return (

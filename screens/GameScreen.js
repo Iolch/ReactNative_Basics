@@ -5,23 +5,26 @@ import React, {
 } from 'react';
 import {
   Alert,
-  Button,
+  FlatList,
   StyleSheet,
   Text,
   View,
-  
 } from 'react-native';
 
 //COSTUM COMPONENTS IMPORTS
 import Card from '../components/Card';
 import NumberDisplay from '../components/NumberDisplay';
+import MainButton from '../components/MainButton';
 
 //CONSTANTS IMPORTS
 import Colors from '../constants/colors';
 
-const GameScreen = (props) => {
+import DefaultStyles from '../constants/defaultstyles';
 
-   
+const GameScreen = (props) => {
+    const minimum = useRef(1);      // unlike the let, this wont execute again after the first load.
+    const maximum = useRef(100);    // so this definition wont be reexecuted after every re-render
+
     const generateLimitedNumber = (min, max, exclude) => {
         min = Math.ceil(min);   //rounds up
         max = Math.floor(max);  //rounds down
@@ -34,15 +37,21 @@ const GameScreen = (props) => {
         }
     };
 
+    const initialGuess = generateLimitedNumber(minimum.current, maximum.current, props.userChoice);
+
+    // We want to store the guesses through out the game
+    const [guesses, setGuesses] = useState([{value:initialGuess, id: initialGuess}]);
+
     const [gameRounds, setGameRounds] = useState(0);
-    const minimum = useRef(1);      // unlike the let, this wont execute again after the first load.
-    const maximum = useRef(100);    // so this definition wont be reexecuted after every re-render
     
     // By doing something like this, the initial state will be set only once
     // this happens because, when the useState() function execute, it checks
     // if there is already a value inside its variable. If there is, it wont
     // change it, no matter how many times this function gets re-rendered.
-    const [currentGuess, setCurrentGuess] = useState(generateLimitedNumber(minimum.current, maximum.current, props.userChoice));
+    const [currentGuess, setCurrentGuess] = useState([initialGuess]);
+
+    
+
 
     const {userChoice, onGameOver} = props;     // destructure the props array, to get and declare only what we want
     
@@ -51,8 +60,11 @@ const GameScreen = (props) => {
             onGameOver(gameRounds, currentGuess);
         }
     }, [onGameOver, userChoice, gameRounds, currentGuess]); // especifying the dependencies, will make that useEffect will only run if one of them changed this cicle
-    
 
+
+
+   
+   
 
     const nextGuessHandler = (direction) => {
 
@@ -69,45 +81,44 @@ const GameScreen = (props) => {
             maximum.current = currentGuess;
             
         }else if( direction ==='greater'){
-            minimum.current = currentGuess;
+            minimum.current = currentGuess + 1;     //doing that, because randon includes lower boundary
         }
 
-        setCurrentGuess(generateLimitedNumber(minimum.current, maximum.current, currentGuess));
+        const nextNumber = generateLimitedNumber(minimum.current, maximum.current, currentGuess);
+
+        setCurrentGuess(nextNumber);
+        setGuesses((currentGuesses) => [{value:nextNumber, id:nextNumber}, ...currentGuesses]);
         setGameRounds((currentRounds) => currentRounds + 1);
     };
     return (
-        <View style={styles.screen}>
-            <Card style={styles.card}>
+        <View style={DefaultStyles.screen}>
+            <Card style={DefaultStyles.card}>
                 <Text>Oponent's number:</Text>
                 <NumberDisplay>
                     {currentGuess}
                 </NumberDisplay>
-                <View style={styles.buttonsContainer}>
-                    <View style={styles.button}><Button title="Lower" onPress={nextGuessHandler.bind(this, 'lower')} color={Colors.secondary}/></View>
-                    <View style={styles.button}><Button title="Greater" onPress={nextGuessHandler.bind(this, 'greater')} color={Colors.primary} /></View>
+                <View style={DefaultStyles.buttonsContainer}>
+                        <MainButton color={Colors.secondary} onPress={nextGuessHandler.bind(this, 'lower')}>Lower</MainButton>
+                        <MainButton color={Colors.primary} onPress={nextGuessHandler.bind(this, 'greater')}>Greater</MainButton>
                 </View>
+            </Card>
+
+            <Card style={DefaultStyles.card}>
+                <Text style={[DefaultStyles.title, DefaultStyles.highlight]}>Previous Guesses: </Text>
+                <FlatList 
+                    keyExtractor={(item, index) => item.id}
+                    data={guesses} 
+                    renderItem = {
+                        element => (<View><Text>{element.item.value}</Text></View>)
+                    }
+                />
             </Card>
         </View>
     );
 };
   
 const styles = StyleSheet.create({
-    screen:{
-        flex:1,
-        padding: 10,
-        backgroundColor:"#f2f2f2",
-        alignItems: "center"
-    },
-    card:{
-        width: "90%",
-        padding: 10,
-    },
-    buttonsContainer:{
-        width: "100%",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center"
-    },
+    
     button:{
         width: "40%",
     },
